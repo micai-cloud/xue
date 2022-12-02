@@ -43,7 +43,7 @@ day_answer_link = 'https://pc.xuexi.cn/points/exam-practice.html'
 chrome_options = webdriver.ChromeOptions()
 chrome_options.binary_location = r'./chrome.exe'
 chrome_options.add_argument('--disable-gpu')
-chrome_options.add_argument('--headless')
+#chrome_options.add_argument('--headless')
 chrome_options.add_argument("--mute-audio")  # 静音
 chrome_options.add_argument('log-level=3')
 
@@ -263,23 +263,21 @@ def login_simulation():
 def day_answer():
     global js
     print("day_answer\n")
-    browser.execute_cdp_cmd('Page.addScriptToEvaluateOnNewDocument', {
-        'source': '''Object.defineProperty(navigator, 'webdriver', {
-                      get: () => undefined}'''
-    })
 
 
 
     browser.get(day_answer_link)
     browser.execute_script(js)
-    sour = browser.find_element(By.CSS_SELECTOR,'#nc_1_n1z')
-    # 获取滑条
-    time.sleep(0.2)
-    ele = browser.find_element(By.CSS_SELECTOR,"#nc_1__scale_text > span")
-    # 拖动滑块滑条末尾
+    try:
+        sour = browser.find_element(By.CSS_SELECTOR,'#nc_1_n1z')
+        # 获取滑条
+        time.sleep(0.2)
+        ele = browser.find_element(By.CSS_SELECTOR,"#nc_1__scale_text > span")
+        # 拖动滑块滑条末尾
 
-    ActionChains(browser).drag_and_drop_by_offset(sour, ele.size['width'], -sour.size['height']).perform()
-
+        ActionChains(browser).drag_and_drop_by_offset(sour, ele.size['width'], -sour.size['height']).perform()
+    except:
+        pass
     print(time_now())
     time.sleep(60)
 
@@ -356,7 +354,7 @@ def get_scores():
                           get: () => undefined}'''
     })
     browser.get(SCORES_LINK)
-    time.sleep(2)
+    time.sleep(10)
     gross_score = browser.find_element(By.XPATH, "//div[@class='my-points-block']/span[1]").get_attribute('innerText')
     today_score = browser.find_element(By.XPATH, "//div[@class='my-points-block']/span[3]").get_attribute('innerText')
     print("total" + str(gross_score))
@@ -367,7 +365,7 @@ def get_scores():
 
 def get_day_score():
     browser.get(SCORES_LINK)
-    time.sleep(2)
+    time.sleep(10)
     titles = browser.find_elements(By.XPATH, "//p[@class='my-points-card-title']")
     scores = browser.find_elements(By.XPATH, "//div[@class='my-points-card-text']")
     zhuan_index = scores[5].get_attribute('innerText').find("分")
@@ -384,56 +382,73 @@ def start_learn():
     zhuan_week_learn()
 
     read_arts()
-    #print(time_now())
 
     watch_videos()  # 观看视频
-    #print(time_now())
 
-    #print(time_now())
 
 
 
 def zhuan_week_learn():
     zhuan_score, week_score = get_day_score()
     if zhuan_score == 0 or week_score == 0:
-        fo = open('id.txt', 'r+')
-        str_ID = fo.read()
-        zhuan_id = str_ID.split()[0]
-        week_id = str_ID.split()[1]
+        browser.get('https://pc.xuexi.cn/points/exam-paper-list.html')
+        time.sleep(5)
+        while zhuan_score == 0:
+            zhuanlist = browser.find_elements(By.XPATH,'//button[@class="ant-btn button ant-btn-primary"]')
+            if zhuanlist != []:
+                for zh in zhuanlist:
+                    if zh.text == '开始答题':
+                        zh.click()
+                        time.sleep(5)
+                        browser.execute_script(js)
+                        try:
+                            sour = browser.find_element(By.CSS_SELECTOR, '#nc_1_n1z')
+                            # 获取滑条
+                            time.sleep(0.2)
+                            ele = browser.find_element(By.CSS_SELECTOR, "#nc_1__scale_text > span")
+                            # 拖动滑块滑条末尾
 
-        while zhuan_score == 0 and int(zhuan_id) < 604:
-            browser.get(zhuan_link + zhuan_id)
-            print(zhuan_link + zhuan_id)
-            time.sleep(5)
-            print("zhuan_answer() is doing.zhuan_id=" + zhuan_id)
-            browser.execute_script(js)
-            print('zhuan ing')
-            time.sleep(90)
-            zhuan_score, week_score = get_day_score()
-            print("zhuan_score:" + str(zhuan_score))
-            print(zhuan_score)
-            zhuan_id = str(int(zhuan_id) + 1)
-            if zhuan_score >= 2:
-                break
+                            ActionChains(browser).drag_and_drop_by_offset(sour, ele.size['width'], -sour.size['height']).perform()
+                        except:
+                            pass
+                        time.sleep(90)
+                        zhuan_score, week_score = get_day_score()
+                        print("zhuan_score:" + str(zhuan_score))
+                        if zhuan_score >= 2:
+                            break
+
+            else:
+                browser.find_element(By.XPATH, '//i[@class="anticon anticon-right"]').click()
 
 
-        position = fo.seek(0, 0)
-        fo.write(zhuan_id)
-        fo.close()  # 保存zhuan_id
+        browser.get('https://pc.xuexi.cn/points/exam-weekly-list.html')
+        time.sleep(5)
+        while week_score == 0:
+            weeklist = browser.find_elements(By.XPATH, '//button[@class="ant-btn button ant-btn-primary"]')
+            if weeklist != []:
+                for week in weeklist:
+                    if week.text == '开始答题':
+                        week.click()
+                        time.sleep(5)
+                        browser.execute_script(js)
+                        try:
+                            sour = browser.find_element(By.CSS_SELECTOR, '#nc_1_n1z')
+                            # 获取滑条
+                            time.sleep(0.2)
+                            ele = browser.find_element(By.CSS_SELECTOR, "#nc_1__scale_text > span")
+                            # 拖动滑块滑条末尾
 
-        fo = open('id.txt', 'r+')
+                            ActionChains(browser).drag_and_drop_by_offset(sour, ele.size['width'], -sour.size['height']).perform()
+                        except:
+                            pass
+                        time.sleep(90)
+                        zhuan_score, week_score = get_day_score()
+                        print("zhuan_score:" + str(week_score))
+                        if week_score >= 2:
+                            break
 
-        while week_score == 0 and int(week_id) < 274:
-            browser.get(week_link + week_id)
-            time.sleep(5)
-            print("week_answer() is doing.week_id=" + week_id)
-            browser.execute_script(js)
-            time.sleep(90)
-            zhuan_score, week_score = get_day_score()
-            print("week_score:" + str(week_score))
-            week_id = str(int(week_id) + 1)
-            if week_score >= 2:
-                break
+            else:
+                browser.find_element(By.XPATH, '//i[@class="anticon anticon-right"]').click()
 
     print(time_now())
 
