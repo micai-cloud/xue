@@ -20,4 +20,4 @@ jobs:
           - name: install selenium
             run: pip install selenium==3.8.1
           - name: run xue
-            run: python qiangguo_chrome.py
+            run: python qiang_chrome.py
