@@ -466,10 +466,10 @@ def pho():
 
 def photo_test():
     pho()
-    time.sleep(60)
+    time.sleep(300)
     while len(browser.find_elements(By.CLASS_NAME, 'ddlogintext')) != 0:
         pho()
-        time.sleep(60)
+        time.sleep(300)
     print('login ok')
 
 
