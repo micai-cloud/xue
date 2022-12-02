@@ -16,8 +16,8 @@ jobs:
             with:
                 python-version: 3.9.1
           - name: install pip packages
-             run: python -m pip install --upgrade pip
+            run: python -m pip install --upgrade pip
           - name: install selenium
-             run: pip install selenium==3.8.1
+            run: pip install selenium==3.8.1
           - name: run xue
-             run: python qiangguo_chrome.py
+            run: python qiangguo_chrome.py
