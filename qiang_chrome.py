@@ -366,7 +366,7 @@ def get_scores():
 def get_day_score():
     browser.get(SCORES_LINK)
     time.sleep(10)
-    titles = browser.find_elements(By.XPATH, "//p[@class='my-points-card-title']")
+    #titles = browser.find_elements(By.XPATH, "//p[@class='my-points-card-title']")
     scores = browser.find_elements(By.XPATH, "//div[@class='my-points-card-text']")
     zhuan_index = scores[5].get_attribute('innerText').find("分")
     zhuan_score = int(scores[5].get_attribute('innerText')[0:zhuan_index])
@@ -411,7 +411,7 @@ def zhuan_week_learn():
                             ActionChains(browser).drag_and_drop_by_offset(sour, ele.size['width'], -sour.size['height']).perform()
                         except:
                             pass
-                        time.sleep(90)
+                        time.sleep(150)
                         zhuan_score, week_score = get_day_score()
                         print("zhuan_score:" + str(zhuan_score))
                         if zhuan_score >= 2:
@@ -441,7 +441,7 @@ def zhuan_week_learn():
                             ActionChains(browser).drag_and_drop_by_offset(sour, ele.size['width'], -sour.size['height']).perform()
                         except:
                             pass
-                        time.sleep(90)
+                        time.sleep(150)
                         zhuan_score, week_score = get_day_score()
                         print("zhuan_score:" + str(week_score))
                         if week_score >= 2:
