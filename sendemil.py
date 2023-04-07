@@ -11,7 +11,8 @@ def send(TET):
     msg = MIMEMultipart('related')
     msg["Subject"] = "学习强国"
     msg["From"] = mail_sender #发送人
-    msg["To"] = "2898355840@qq.com" #接收人
+    #msg["To"] = "2898355840@qq.com" #接收人
+    msg["To"] = "2544624953@qq.com"
     if TET == '':
         #html格式的邮件正文
         # html格式的邮件正文
