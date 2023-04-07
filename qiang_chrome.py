@@ -370,8 +370,8 @@ def get_day_score():
     scores = browser.find_elements(By.XPATH, "//div[@class='my-points-card-text']")
     zhuan_index = scores[5].get_attribute('innerText').find("分")
     zhuan_score = int(scores[5].get_attribute('innerText')[0:zhuan_index])
-    week_score = int(scores[6].get_attribute('innerText')[0:1])
-    return zhuan_score, week_score
+    #week_score = int(scores[6].get_attribute('innerText')[0:1])
+    return zhuan_score
 
 
 def start_learn():
@@ -389,8 +389,8 @@ def start_learn():
 
 
 def zhuan_week_learn():
-    zhuan_score, week_score = get_day_score()
-    if zhuan_score == 0 or week_score == 0:
+    zhuan_score = get_day_score()
+    if zhuan_score == 0 :
         browser.get('https://pc.xuexi.cn/points/exam-paper-list.html')
         time.sleep(5)
         while zhuan_score == 0:
@@ -412,7 +412,7 @@ def zhuan_week_learn():
                         except:
                             pass
                         time.sleep(150)
-                        zhuan_score, week_score = get_day_score()
+                        zhuan_score = get_day_score()
                         print("zhuan_score:" + str(zhuan_score))
                         if zhuan_score >= 2:
                             break
@@ -423,7 +423,7 @@ def zhuan_week_learn():
 
         browser.get('https://pc.xuexi.cn/points/exam-weekly-list.html')
         time.sleep(5)
-        while week_score == 0:
+        '''while week_score == 0:
             weeklist = browser.find_elements(By.XPATH, '//button[@class="ant-btn button ant-btn-primary"]')
             if weeklist != []:
                 for week in weeklist:
@@ -448,7 +448,7 @@ def zhuan_week_learn():
                             break
 
             else:
-                browser.find_element(By.XPATH, '//i[@class="anticon anticon-right"]').click()
+                browser.find_element(By.XPATH, '//i[@class="anticon anticon-right"]').click()'''
 
     print(time_now())
 
