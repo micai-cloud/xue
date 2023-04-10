@@ -366,11 +366,8 @@ def get_scores():
 def get_day_score():
     browser.get(SCORES_LINK)
     time.sleep(10)
-    #titles = browser.find_elements(By.XPATH, "//p[@class='my-points-card-title']")
-    scores = browser.find_elements(By.XPATH, "//div[@class='my-points-card-text']")
-    zhuan_index = scores[5].get_attribute('innerText').find("分")
-    zhuan_score = int(scores[5].get_attribute('innerText')[0:zhuan_index])
-    #week_score = int(scores[6].get_attribute('innerText')[0:1])
+    scores = browser.find_elements(By.XPATH, "/html/body/div[1]/div/div[2]/div/div[3]/div[2]/div[6]/div[2]/div[1]/div[2]")
+    zhuan_score = int(scores[0].get_attribute('innerText')[0])
     return zhuan_score
 
 
